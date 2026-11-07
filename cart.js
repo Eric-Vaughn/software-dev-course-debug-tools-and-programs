@@ -6,9 +6,9 @@ const cart = [
 
 function calculateTotal(cartItems) {
     let total = 0;
-    for (let i = 0; i <= cartItems.length; i++) {
+    for (let i = 0; i < cartItems.length; i++) {
         // Bug: <= should be <
-        total += cartItems[i].price; // Bug: cartItems[i] is undefined on the last iteration
+        total += cartItems[i].price; // Bug: cartItems[i] is undefined on the last iteration - FIXED
     }
     return total;
 }
@@ -38,7 +38,11 @@ document.getElementById("receipt").textContent = receipt;
 /**
  * Document Errors
  * 
- * Found a TypeError: Cannot read properties of undefined (reading 'price')
-    at calculateTotal (cart.js:10:29)
-    at cart.js:30:15
+ * Found a TypeError:
+ * TypeError: Cannot read properties of undefined (reading 'price')
+ * at calculateTotal (cart.js:10:29) 
+ * at cart.js:30:15
+ * 
+ * Fix by correcting our loop conditional (it was going 1 too many)
+ * 
  */
