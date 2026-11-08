@@ -22,14 +22,14 @@ function applyDiscount(total, discountRate) {
 }
 
 function generateReceipt(cartItems, total) {
-	// Check if the total is a finite number
+	// Check if the total is NOT a finite number
 	if (!Number.isFinite(total)) return `${total} is not a number.`;
 
     let receipt = "Items:\n";
     cartItems.forEach((item) => {
         receipt += `${item.name}: $${item.price}\n`;
     });
-    receipt += `Total: $${total.toFixed(2)}`; // Bug: total may not be a number
+    receipt += `Total: $${total.toFixed(2)}`; // Bug: total may not be a number - FIXED
     return receipt;
 }
 
@@ -46,12 +46,22 @@ document.getElementById("receipt").textContent = receipt;
  * Validate Fixes
  */
 
-// TODO:
-// VALIDATE
+// Fix Validation for Bug 1: The script now runs.
+
+// Fix Validation for Bug 2
+console.log("Negative discountRate results in:", applyDiscount(total, -0.2));
+// Output:
+// "Negative discountRate results in: -1"
+
+// Fix Validation for Bug 3
+console.log("Total not being a number results in:", generateReceipt(cart, cart));
+// Output:
+// "Total not being a number results in: [object Object],[object Object],[object Object] is not a number."
 
 /**
  * Document Errors
  *
+ * Bug 1:
  * Found a TypeError:
  * TypeError: Cannot read properties of undefined (reading 'price')
  * at calculateTotal (cart.js:10:29)
@@ -59,11 +69,13 @@ document.getElementById("receipt").textContent = receipt;
  *
  * Fix by correcting our loop conditional (it was going 1 too many)
  * 
+ * Bug 2:
  * Found an TypeError:
  * The user has to input a discount rate, so we need to validate that it's a valid discount rate between 0 & 1
  * 
  * Fix by checking if the discount rate is between 0 & 1, inclusive
  * 
+ * Bug 3:
  * Found a TyperError:
  * If the user inputs a total that is not a number, then the generateReceipt() function can't use the .toFixed() method on it.
  * 
